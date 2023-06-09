@@ -12,7 +12,7 @@
   <a href="https://play.google.com/store/apps/details?id=com.henrikherzig.simplewol"><img src="https://img.shields.io/badge/Google_Play-414141?logo=google-play&logoColor=white" alt="Google Play"></a>
   <a href="https://apps.apple.com/de/app/simple-wake-on-lan/id"><img src="https://img.shields.io/badge/App_Store-0D96F6?logo=app-store&logoColor=white" alt="App Store"></a>
   <a href="https://github.com/herzhenr/simple-wake-on-lan/actions/workflows/lint.yml"><img src="https://github.com/herzhenr/simple-wake-on-lan/actions/workflows/lint.yml/badge.svg?branch=main" alt="Workflow Lint"></a>
-  <a href="https://github.com/herzhenr/simple-wake-on-lan"><img src="https://img.shields.io/github/release/herzhenr/spic-android.svg?logo=github&color=blue" alt="GitHub Release"></a>
+  <a href="https://github.com/herzhenr/simple-wake-on-lan"><img src="https://img.shields.io/github/release/herzhenr/simple-wake-on-lan.svg?logo=github&color=blue" alt="GitHub Release"></a>
 </p>
 
 Simple Wake on Lan is a simple cross-platform flutter application for Android and iOS to send Wake On Lan packets to a
