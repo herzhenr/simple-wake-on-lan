@@ -1,0 +1,5 @@
+- [ ] Appearance
+  - [x] Theme (System, Light, Dark)
+  - [ ] Color Palette (Auto (Material You on Android) or different color palettes)
+- [ ] Version Notes
+- [ ] Contact / About Developer Info

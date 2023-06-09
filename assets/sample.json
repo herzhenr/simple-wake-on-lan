@@ -1,0 +1,20 @@
+[
+  {
+    "id": "6b353440-d183-11ed-964b-69a9facd6cfd",
+    "hostName": "Raspberry Pi",
+    "ipAddress": "192.168.1.9",
+    "macAddress": "12:12:12:12:12:12",
+    "wolPort": 9,
+    "deviceType": "computer",
+    "modified": "2023-04-14T14:17:45.974511"
+  },
+  {
+    "id": "87c87ab0-d184-13ed-9d56-a5f550305985",
+    "hostName": "Printer",
+    "ipAddress": "192.168.1.10",
+    "macAddress": "f0:f0:f0:f0:f0:f0",
+    "wolPort": 9,
+    "deviceType": "printer",
+    "modified": "2023-04-14T14:18:14.997081"
+  }
+]
