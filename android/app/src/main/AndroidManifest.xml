@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.henrikherzig.simplewol">
    <application
-        android:label="simple_wake_on_lan"
+        android:label="Simple WOL"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
