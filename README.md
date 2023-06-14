@@ -10,9 +10,9 @@
   <a href="https://flutter.dev"><img src="https://img.shields.io/badge/Flutter-%2302569B.svg?logo=Flutter&logoColor=white" alt="Flutter"></a>
   <a href="https://www.dart.dev"><img src="https://img.shields.io/badge/Dart-%230175C2.svg?logo=dart&logoColor=white" alt="Dart"></a>
   <a href="https://play.google.com/store/apps/details?id=com.henrikherzig.simplewol"><img src="https://img.shields.io/badge/Google_Play-414141?logo=google-play&logoColor=white" alt="Google Play"></a>
-  <a href="https://apps.apple.com/de/app/simple-wake-on-lan/id"><img src="https://img.shields.io/badge/App_Store-0D96F6?logo=app-store&logoColor=white" alt="App Store"></a>
+  <a href="https://apps.apple.com/de/app/simple-wake-on-lan/id6449835474"><img src="https://img.shields.io/badge/App_Store-0D96F6?logo=app-store&logoColor=white" alt="App Store"></a>
   <a href="https://github.com/herzhenr/simple-wake-on-lan/actions/workflows/lint.yml"><img src="https://github.com/herzhenr/simple-wake-on-lan/actions/workflows/lint.yml/badge.svg?branch=main" alt="Workflow Lint"></a>
-  <a href="https://github.com/herzhenr/simple-wake-on-lan"><img src="https://img.shields.io/github/release/herzhenr/simple-wake-on-lan.svg?logo=github&color=blue" alt="GitHub Release"></a>
+  <a href="https://github.com/herzhenr/simple-wake-on-lan/releases"><img src="https://img.shields.io/github/release/herzhenr/simple-wake-on-lan.svg?logo=github&color=blue" alt="GitHub Release"></a>
 </p>
 
 Simple Wake on Lan is a simple cross-platform flutter application for Android and iOS to send Wake On Lan packets to a
@@ -21,7 +21,7 @@ device.
 <p align="center">
 <a href="https://play.google.com/store/apps/details?id=com.henrikherzig.simplewol"><img src="docs/googlePlay.png" style="height: 60px;" alt="Get it on Google Play"></a>
 &nbsp &nbsp
-<a href="https://apps.apple.com/de/app/simple-wake-on-lan/id"><img src="docs/appStore.svg" style="height: 60px;" alt="Download on the App Store"></a>
+<a href="https://apps.apple.com/de/app/simple-wake-on-lan/id6449835474"><img src="docs/appStore.svg" style="height: 60px;" alt="Download on the App Store"></a>
 </p>
 
 ## Usage
