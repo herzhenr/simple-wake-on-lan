@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:simple_wake_on_lan/constants.dart';
 import 'package:simple_wake_on_lan/screens/about/about.dart';
 import 'package:simple_wake_on_lan/screens/home/home.dart';
@@ -89,31 +90,41 @@ class _MyHomePageState extends State<MyHomePage> {
       SettingsPage(title: AppLocalizations.of(context)!.settingsPageTitle),
       AboutPage(title: AppLocalizations.of(context)!.aboutPageTitle),
     ];
-    return Scaffold(
-      body: screens[selectedNavigationIndex],
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            selectedNavigationIndex = index;
-          });
-        },
-        selectedIndex: selectedNavigationIndex,
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        destinations: [
-          NavigationDestination(
-              icon: const Icon(AppConstants.homeIcon),
-              label: AppLocalizations.of(context)!.homePageLabel),
-          NavigationDestination(
-              icon: const Icon(
-                AppConstants.settingsIcon,
-              ),
-              label: AppLocalizations.of(context)!.settingsPageTitle),
-          NavigationDestination(
-              icon: const Icon(
-                AppConstants.aboutIcon,
-              ),
-              label: AppLocalizations.of(context)!.aboutPageTitle),
-        ],
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent, //top status bar
+        systemNavigationBarColor: Theme.of(context).colorScheme.surfaceVariant, // navigation bar color, the one Im looking for
+        statusBarIconBrightness: Brightness.dark, // status bar icons' color
+        systemNavigationBarIconBrightness:
+        Brightness.dark, //navigation bar icons' color
+      ),
+      child: Scaffold(
+        body: screens[selectedNavigationIndex],
+        bottomNavigationBar: NavigationBar(
+          onDestinationSelected: (int index) {
+            setState(() {
+              selectedNavigationIndex = index;
+            });
+          },
+          selectedIndex: selectedNavigationIndex,
+          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+          destinations: [
+            NavigationDestination(
+                icon: const Icon(AppConstants.homeIcon),
+                label: AppLocalizations.of(context)!.homePageLabel),
+            NavigationDestination(
+                icon: const Icon(
+                  AppConstants.settingsIcon,
+                ),
+                label: AppLocalizations.of(context)!.settingsPageTitle),
+            NavigationDestination(
+                icon: const Icon(
+                  AppConstants.aboutIcon,
+                ),
+                label: AppLocalizations.of(context)!.aboutPageTitle),
+          ],
+        ),
+        extendBody: true,
       ),
     );
   }
