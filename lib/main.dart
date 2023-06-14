@@ -93,10 +93,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent, //top status bar
-        systemNavigationBarColor: Theme.of(context).colorScheme.surfaceVariant, // navigation bar color, the one Im looking for
+        systemNavigationBarColor: Theme.of(context)
+            .colorScheme
+            .surfaceVariant, // navigation bar color, the one Im looking for
         statusBarIconBrightness: Brightness.dark, // status bar icons' color
         systemNavigationBarIconBrightness:
-        Brightness.dark, //navigation bar icons' color
+            Brightness.dark, //navigation bar icons' color
       ),
       child: Scaffold(
         body: screens[selectedNavigationIndex],
