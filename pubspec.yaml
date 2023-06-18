@@ -48,7 +48,7 @@ dependencies:
   network_info_plus: ^3.0.2
   path_provider: ^2.0.14
   uuid: ^3.0.7
-  wake_on_lan: ^3.1.0+6
+  wake_on_lan: ^3.2.0
   share_plus: ^6.3.1
   file_picker: ^5.2.7
   url_launcher: ^6.1.10

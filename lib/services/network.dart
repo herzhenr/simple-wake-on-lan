@@ -90,18 +90,17 @@ Stream<Message> sendWolPackage({required NetworkDevice device}) async* {
 
   // if no error occurred: try to send wol package
   yield Message(text: "Provided ip and mac address are both valid");
-  yield Message(text: "Trying to send a WOL Package");
+  yield Message(text: "Trying to send WOL Packages");
   IPv4Address ipv4Address = IPv4Address(ip);
   MACAddress macAddress = MACAddress(mac);
   try {
     WakeOnLAN wol = WakeOnLAN(ipv4Address, macAddress, port: port!);
-    await wol.wake();
+    await wol.wake(repeat: 10);
     yield Message(
-        text: "Successfully send WOL package to $ip", type: MsgType.check);
+        text: "Successfully send WOL packages to $ip", type: MsgType.check);
   } catch (e) {
     yield Message(
-        text:
-            "There was a error when trying to send a WOL Package to this host",
+        text: "There was a error when trying to send WOL Packages to this host",
         type: MsgType.error);
   }
 
@@ -109,9 +108,10 @@ Stream<Message> sendWolPackage({required NetworkDevice device}) async* {
   yield Message(text: "Trying to ping device until it is online...");
   bool online = false;
   int tries = 0;
-  while (!online && tries < 10) {
+  const maxPings = 20;
+  while (!online && tries < maxPings) {
     tries++;
-    yield Message(text: "Sending ping $tries/10", type: MsgType.ping);
+    yield Message(text: "Sending ping $tries/$maxPings", type: MsgType.ping);
 
     final ping = Ping(ip, count: 1, timeout: 5);
 
