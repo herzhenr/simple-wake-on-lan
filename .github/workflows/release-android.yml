@@ -18,7 +18,7 @@ jobs:
           cache: 'gradle'
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.7.5"
+          flutter-version: "3.10.5"
           channel: 'stable'
           cache: true
       - name: Decode Keystore
