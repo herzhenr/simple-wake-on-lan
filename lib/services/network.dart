@@ -91,11 +91,22 @@ Stream<Message> sendWolPackage({required NetworkDevice device}) async* {
   // if no error occurred: try to send wol package
   yield Message(text: "Provided ip and mac address are both valid");
   yield Message(text: "Trying to send WOL Packages");
+
   IPv4Address ipv4Address = IPv4Address(ip);
   MACAddress macAddress = MACAddress(mac);
+
+  // sometimes only a broadcast works to wake a device so a broadcast is sent additionally
+
+  final subnet = ip.substring(0, ip.lastIndexOf("."));
+  final broadcast = "$subnet.255";
+  IPv4Address ipv4Broadcast = IPv4Address(broadcast);
+
   try {
     WakeOnLAN wol = WakeOnLAN(ipv4Address, macAddress, port: port!);
-    await wol.wake(repeat: 10);
+    await wol.wake(repeat: 5);
+    await Future.delayed(const Duration(seconds: 1));
+    WakeOnLAN wolBroadcast = WakeOnLAN(ipv4Broadcast, macAddress, port: port);
+    await wolBroadcast.wake(repeat: 5);
     yield Message(
         text: "Successfully send WOL packages to $ip", type: MsgType.check);
   } catch (e) {
@@ -108,10 +119,10 @@ Stream<Message> sendWolPackage({required NetworkDevice device}) async* {
   yield Message(text: "Trying to ping device until it is online...");
   bool online = false;
   int tries = 0;
-  const maxPings = 20;
+  const maxPings = 25;
   while (!online && tries < maxPings) {
     tries++;
-    yield Message(text: "Sending ping $tries/$maxPings", type: MsgType.ping);
+    yield Message(text: "Sending ping #$tries", type: MsgType.ping);
 
     final ping = Ping(ip, count: 1, timeout: 5);
 
