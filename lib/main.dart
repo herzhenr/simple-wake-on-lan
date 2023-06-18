@@ -126,7 +126,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 label: AppLocalizations.of(context)!.aboutPageTitle),
           ],
         ),
-        extendBody: true,
       ),
     );
   }

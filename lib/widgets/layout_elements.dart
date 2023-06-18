@@ -89,10 +89,9 @@ class IconTextButton extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
-            //crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Icon(icon),
-              const SizedBox(width: 10),
+              const SizedBox(width: 5),
               Text(text),
             ],
           ),
