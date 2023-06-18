@@ -1,5 +1,8 @@
 - [ ] Appearance
   - [x] Theme (System, Light, Dark)
   - [ ] Color Palette (Auto (Material You on Android) or different color palettes)
-- [ ] Version Notes
+- [ ] Display Version Info
 - [ ] Contact / About Developer Info
+- [ ] Option to select if wol should be sent as broadcast
+- [ ] Display info dialogs (e.g. how to get mac address, what is wol in general, how does it work)
+- [ ] Import arp table (e.g. generated from a linux pc)
