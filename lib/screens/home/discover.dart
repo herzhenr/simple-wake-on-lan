@@ -116,10 +116,14 @@ class _DiscoverPageState extends State<DiscoverPage> {
                         title: AppLocalizations.of(context)!
                             .discoverAddCustomDeviceCard,
                         trailing: const Icon(Icons.arrow_forward),
-                        onTap: () => showBottomSheet(
-                            title: AppLocalizations.of(context)!
-                                .discoverAddCustomAlertTitle,
-                            device: NetworkDevice()))
+                        onTap: () => showCustomBottomSheet(
+                            context: context,
+                            formPage: NetworkDeviceFormPage(
+                                title: AppLocalizations.of(context)!
+                                    .discoverAddDeviceAlertTitle,
+                                device: NetworkDevice(),
+                                onSubmitDeviceCallback:
+                                    widget.updateDevicesList)))
                   ],
                 ),
                 TextTitle(

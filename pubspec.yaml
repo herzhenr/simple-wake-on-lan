@@ -42,10 +42,9 @@ dependencies:
 
 
   multicast_dns: ^0.3.2+3
-  lan_scanner: ^3.5.0
   network_tools: ^3.0.0+3
-  dart_ping: ^7.0.2
-  dart_ping_ios: ^2.0.1
+  dart_ping: ^8.0.1
+  dart_ping_ios: ^3.0.0
   network_info_plus: ^3.0.2
   path_provider: ^2.0.14
   uuid: ^3.0.7
@@ -54,11 +53,8 @@ dependencies:
   file_picker: ^5.2.7
   url_launcher: ^6.1.10
   adaptive_theme: ^3.2.0
-  mockito: ^5.4.0
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
