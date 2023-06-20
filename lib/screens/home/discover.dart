@@ -81,9 +81,13 @@ class _DiscoverPageState extends State<DiscoverPage> {
         title: Text(AppLocalizations.of(context)!.discoverTitle),
       ),
       floatingActionButton: ActionButton(
-          onPressed: () => showBottomSheet(
-              title: AppLocalizations.of(context)!.discoverAddCustomAlertTitle,
-              device: NetworkDevice()),
+          onPressed: () => showCustomBottomSheet(
+              context: context,
+              formPage: NetworkDeviceFormPage(
+                  title:
+                      AppLocalizations.of(context)!.discoverAddDeviceAlertTitle,
+                  device: NetworkDevice(),
+                  onSubmitDeviceCallback: widget.updateDevicesList)),
           text: AppLocalizations.of(context)!.discoverAddCustomDeviceButton,
           icon: const Icon(Icons.add)),
       body: buildListview(),
