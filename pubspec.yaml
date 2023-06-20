@@ -49,10 +49,11 @@ dependencies:
   path_provider: ^2.0.14
   uuid: ^3.0.7
   wake_on_lan: ^3.2.0
-  share_plus: ^6.3.1
+  share_plus: ^7.0.2
   file_picker: ^5.2.7
   url_launcher: ^6.1.10
   adaptive_theme: ^3.2.0
+  package_info_plus: ^4.0.2
 
 dev_dependencies:
 

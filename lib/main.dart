@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:simple_wake_on_lan/constants.dart';
 import 'package:simple_wake_on_lan/screens/about/about.dart';
 import 'package:simple_wake_on_lan/screens/home/home.dart';
@@ -10,17 +11,25 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   // Register dart_ping_ios with dart_ping
   DartPingIOS.register();
-  WidgetsFlutterBinding.ensureInitialized();
+
+  // Get saved theme mode
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
-  runApp(MyApp(savedThemeMode: savedThemeMode));
+
+  // Get package info
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+  runApp(MyApp(savedThemeMode: savedThemeMode, packageInfo: packageInfo));
 }
 
 class MyApp extends StatelessWidget {
   final AdaptiveThemeMode? savedThemeMode;
-
-  const MyApp({super.key, required this.savedThemeMode});
+  final PackageInfo packageInfo;
+  const MyApp(
+      {super.key, required this.savedThemeMode, required this.packageInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +56,17 @@ class MyApp extends StatelessWidget {
         ],
         theme: light,
         darkTheme: dark,
-        home: const MyHomePage(),
+        home: MyHomePage(
+          packageInfo: packageInfo,
+        ),
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({super.key, required this.packageInfo});
+  final PackageInfo packageInfo;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -88,7 +100,9 @@ class _MyHomePageState extends State<MyHomePage> {
           },
           deviceTypesValues: deviceTypesValues),
       SettingsPage(title: AppLocalizations.of(context)!.settingsPageTitle),
-      AboutPage(title: AppLocalizations.of(context)!.aboutPageTitle),
+      AboutPage(
+          title: AppLocalizations.of(context)!.aboutPageTitle,
+          packageInfo: widget.packageInfo),
     ];
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
