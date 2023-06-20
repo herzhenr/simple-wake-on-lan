@@ -70,9 +70,9 @@ class _AboutPageState extends State<AboutPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const VersionText(text: "Version "),
                   VersionText(text: widget.packageInfo.version),
-                  const SizedBox(width: 10),
-                  VersionText(text: "(${widget.packageInfo.buildNumber})"),
+                  VersionText(text: " (${widget.packageInfo.buildNumber})"),
                 ],
               ),
             ],
