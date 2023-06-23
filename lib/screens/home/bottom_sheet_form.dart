@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:simple_wake_on_lan/constants.dart';
 import 'package:simple_wake_on_lan/screens/home/discover.dart';
 import 'package:simple_wake_on_lan/screens/home/home.dart';
@@ -6,6 +7,7 @@ import 'package:simple_wake_on_lan/services/data.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:simple_wake_on_lan/widgets/layout_elements.dart';
 import '../../services/database.dart';
+import '../../services/form_input_formatters.dart';
 import '../../widgets/chip_cards.dart';
 import '../../widgets/universal_ui_components.dart';
 
@@ -167,14 +169,15 @@ class _ModularBottomFormPageState extends State<ModularBottomFormPage> {
               controller: widget.controllerIp,
               validator: createValidator(AppConstants.ipValidationRegex,
                   AppLocalizations.of(context)!.formIpError),
+              // inputFormatters: [IPAddressFormatter()]
             ),
             getCustomTextFormField(
-              label: AppLocalizations.of(context)!.formMacHint,
-              formKey: widget.formKeyMac,
-              controller: widget.controllerMac,
-              validator: createValidator(AppConstants.macValidationRegex,
-                  AppLocalizations.of(context)!.formMacError),
-            ),
+                label: AppLocalizations.of(context)!.formMacHint,
+                formKey: widget.formKeyMac,
+                controller: widget.controllerMac,
+                validator: createValidator(AppConstants.macValidationRegex,
+                    AppLocalizations.of(context)!.formMacError),
+                inputFormatters: [MACAddressFormatter()]),
             const SizedBox(
               height: 20,
             ),
@@ -290,12 +293,14 @@ class _ModularBottomFormPageState extends State<ModularBottomFormPage> {
       required TextEditingController controller,
       required GlobalKey<FormState> formKey,
       String? Function(String?)? validator,
-      String? Function(String?)? onSaved}) {
+      String? Function(String?)? onSaved,
+      List<TextInputFormatter>? inputFormatters}) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: Form(
         key: formKey,
         child: TextFormField(
+          inputFormatters: inputFormatters,
           autovalidateMode: AutovalidateMode.always,
           validator: validator,
           controller: controller,

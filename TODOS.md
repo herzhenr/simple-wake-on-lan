@@ -6,3 +6,5 @@
 - [ ] Option to select if wol should be sent as broadcast
 - [ ] Display info dialogs (e.g. how to get mac address, what is wol in general, how does it work)
 - [ ] Import arp table (e.g. generated from a linux pc)
+- [ ] mac address: automatically add delimiter ":" after every 2 characters
+- [ ] ip address: also allow hostnames (wol package now allows for hostname resolution)
