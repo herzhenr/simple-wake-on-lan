@@ -27,15 +27,15 @@ class AppConstants {
 
   // Form Elements
   static const formIcon = Icons.done_rounded;
-  static const nameValidationRegex = r'^.{1,200}$';
+  static const nameValidationRegex = r'^.{1,100}$';
   static const ipValidationRegex =
-      r'\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b';
+      r'^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$';
   static const ipSubStringValidationRegex =
       r'^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})\.){0,3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})(?:\.[0-9]{0,3})?$';
   static const macValidationRegex =
-      r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$';
+      r'^(?:[0-9A-Fa-f]{2}([-:]))(?:[0-9A-Fa-f]{2}\1){4}[0-9A-Fa-f]{2}$';
   static const macSubStringValidationRegex =
-      r'^(?:(?:[0-9A-Fa-f]{2}:){0,4}[0-9A-Fa-f]{2})?(?::[0-9A-Fa-f]{0,2}|[0-9A-Fa-f])?$';
+      r'^(?:[0-9A-Fa-f]{2}(?:([-:])|$)){0,5}[0-9A-Fa-f]{0,2}$';
   static const portValidationRegex =
       r'^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$';
   static const formWrongFormatIcon = Icons.assignment_outlined;
