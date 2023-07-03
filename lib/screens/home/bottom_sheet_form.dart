@@ -6,6 +6,7 @@ import 'package:simple_wake_on_lan/screens/home/home.dart';
 import 'package:simple_wake_on_lan/services/data.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:simple_wake_on_lan/widgets/layout_elements.dart';
+import 'package:rich_text_controller/rich_text_controller.dart';
 import '../../services/database.dart';
 import '../../services/form_input_formatters.dart';
 import '../../widgets/chip_cards.dart';
@@ -27,10 +28,12 @@ abstract class ModularBottomFormPage extends StatefulWidget {
 
   // text controllers for the text input fields
   final TextEditingController controllerName = TextEditingController();
-  final TextEditingController controllerIp = TextEditingController();
-  final TextEditingController controllerMac = TextEditingController();
   final TextEditingController controllerPort = TextEditingController();
   final TextEditingController controllerIcon = TextEditingController();
+
+  // Rich Text Controllers needed, so delimiter symbols are colored differently
+  late final RichTextController controllerIp; //= TextEditingController();
+  late final RichTextController controllerMac; //= TextEditingController();
 
   final formKeyIp = GlobalKey<FormState>();
   final formKeyMac = GlobalKey<FormState>();
@@ -100,6 +103,17 @@ class _ModularBottomFormPageState extends State<ModularBottomFormPage> {
   @override
   void initState() {
     super.initState();
+
+    widget.controllerIp = RichTextController(
+      onMatch: (List<String> match) {},
+      patternMatchMap: AppConstants().ipPattern,
+    );
+
+    widget.controllerMac = RichTextController(
+      onMatch: (List<String> match) {},
+      patternMatchMap: AppConstants().macPattern,
+    );
+
     // initialize the text controllers
     widget.controllerName.text = widget.device.hostName;
     widget.controllerIp.text = widget.device.ipAddress;
@@ -164,13 +178,12 @@ class _ModularBottomFormPageState extends State<ModularBottomFormPage> {
                   AppLocalizations.of(context)!.formNameError),
             ),
             getCustomTextFormField(
-              label: AppLocalizations.of(context)!.formIpHint,
-              formKey: widget.formKeyIp,
-              controller: widget.controllerIp,
-              validator: createValidator(AppConstants.ipValidationRegex,
-                  AppLocalizations.of(context)!.formIpError),
-              // inputFormatters: [IPAddressFormatter()]
-            ),
+                label: AppLocalizations.of(context)!.formIpHint,
+                formKey: widget.formKeyIp,
+                controller: widget.controllerIp,
+                validator: createValidator(AppConstants.ipValidationRegex,
+                    AppLocalizations.of(context)!.formIpError),
+                inputFormatters: [IPAddressFormatter()]),
             getCustomTextFormField(
                 label: AppLocalizations.of(context)!.formMacHint,
                 formKey: widget.formKeyMac,

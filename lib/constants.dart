@@ -31,7 +31,7 @@ class AppConstants {
   static const ipValidationRegex =
       r'^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$';
   static const ipSubStringValidationRegex =
-      r'^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})\.){0,3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})(?:\.[0-9]{0,3})?$';
+      r'^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})\.){0,3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2}))?$';
   static const macValidationRegex =
       r'^(?:[0-9A-Fa-f]{2}([-:]))(?:[0-9A-Fa-f]{2}\1){4}[0-9A-Fa-f]{2}$';
   static const macSubStringValidationRegex =
@@ -40,6 +40,17 @@ class AppConstants {
       r'^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$';
   static const formWrongFormatIcon = Icons.assignment_outlined;
   static const formInvalidArgument = Icons.cancel_outlined;
+
+  // replacement patterns for the rich text controllers of mac and ip address
+  Map<RegExp, TextStyle> macPattern = {
+    RegExp(r"[:-]"):
+        const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)
+  };
+
+  Map<RegExp, TextStyle> ipPattern = {
+    RegExp(r"\."):
+        const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)
+  };
 
   // WOL Port Chips
   List<CustomChoiceChip<int>> getChipsWolPorts({BuildContext? context}) {
