@@ -324,7 +324,7 @@ class _HomePageState extends State<HomePage> {
     } else {
       title = device.ipAddress;
     }
-    return CustomCard(
+    return DeviceCard(
       title: title,
       subtitle: subtitle,
       deviceType: device.deviceType,

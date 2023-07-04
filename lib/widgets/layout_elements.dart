@@ -140,12 +140,12 @@ class SpacedRow extends StatelessWidget {
   }
 }
 
-class CustomCard extends StatelessWidget {
+class DeviceCard extends StatelessWidget {
   final VoidCallback? onTap;
   final String? title, subtitle, deviceType;
   final Widget? trailing;
 
-  const CustomCard(
+  const DeviceCard(
       {super.key,
       this.onTap,
       this.title,

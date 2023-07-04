@@ -26,6 +26,10 @@ class _DiscoverPageState extends State<DiscoverPage> {
     _deviceDiscovery();
   }
 
+  Future<String?> subnet = NetworkInfo()
+      .getWifiIP()
+      .then((value) => value?.substring(0, value.lastIndexOf('.')));
+
   // variables for discovering network devices and showing the progress in the ui
   StreamSubscription<NetworkDevice>? _subscription;
   final List<NetworkDevice> _devices = [];
@@ -115,19 +119,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
               children: [
                 TextTitle(
                   children: [
-                    CustomCard(
-                        deviceType: AppConstants.addCustomDeviceType,
-                        title: AppLocalizations.of(context)!
-                            .discoverAddCustomDeviceCard,
-                        trailing: const Icon(Icons.arrow_forward),
-                        onTap: () => showCustomBottomSheet(
-                            context: context,
-                            formPage: NetworkDeviceFormPage(
-                                title: AppLocalizations.of(context)!
-                                    .discoverAddDeviceAlertTitle,
-                                device: NetworkDevice(),
-                                onSubmitDeviceCallback:
-                                    widget.updateDevicesList)))
+                    getSubnetInfo(),
                   ],
                 ),
                 TextTitle(
@@ -150,7 +142,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                               } else {
                                 title = _devices[index].ipAddress;
                               }
-                              return CustomCard(
+                              return DeviceCard(
                                 title: title,
                                 subtitle: subtitle,
                                 onTap: () => showCustomBottomSheet(
@@ -176,6 +168,36 @@ class _DiscoverPageState extends State<DiscoverPage> {
         ],
       ),
     );
+  }
+
+  Widget getSubnetInfo() {
+    return Card(
+        elevation: 0,
+        color:
+            Theme.of(context).colorScheme.secondaryContainer, //primaryContainer
+        child: InkWell(
+            borderRadius: AppConstants.borderRadius,
+            child: ListTile(
+              title: Text(AppLocalizations.of(context)!.discoverCardTitle),
+              subtitle: FutureBuilder<String?>(
+                  future: subnet,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(
+                          "${AppLocalizations.of(context)!.discoverCardTextData} ${snapshot.data}");
+                    } else {
+                      return Text(
+                          AppLocalizations.of(context)!.discoverCardTextNoData);
+                    }
+                  }),
+              minLeadingWidth: 0,
+              leading: const SizedBox(
+                height: double.infinity,
+                child: Icon(
+                  Icons.wifi,
+                ),
+              ),
+            )));
   }
 
   void showBottomSheet(
