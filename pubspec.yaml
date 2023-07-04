@@ -55,6 +55,7 @@ dependencies:
   adaptive_theme: ^3.2.0
   package_info_plus: ^4.0.2
   rich_text_controller: ^1.4.2
+  device_info_plus: ^9.0.2
 
 dev_dependencies:
 

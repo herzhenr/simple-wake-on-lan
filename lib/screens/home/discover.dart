@@ -23,12 +23,23 @@ class _DiscoverPageState extends State<DiscoverPage> {
   @override
   void initState() {
     super.initState();
+    initSubnet();
     _deviceDiscovery();
   }
 
-  Future<String?> subnet = NetworkInfo()
-      .getWifiIP()
-      .then((value) => value?.substring(0, value.lastIndexOf('.')));
+  String? _subnet;
+
+  Future<void> initSubnet() async {
+    String? subnet = await NetworkInfo()
+        .getWifiIP()
+        .then((value) => value?.substring(0, value.lastIndexOf('.')));
+
+    if (!mounted) return;
+
+    setState(() {
+      _subnet = subnet;
+    });
+  }
 
   // variables for discovering network devices and showing the progress in the ui
   StreamSubscription<NetworkDevice>? _subscription;
@@ -42,9 +53,12 @@ class _DiscoverPageState extends State<DiscoverPage> {
       _progress = 0.0;
     });
 
-    String? wifiIP = await (NetworkInfo().getWifiIP());
-    final String subnet = wifiIP!.substring(0, wifiIP.lastIndexOf('.'));
-    final stream = findDevicesInNetwork(subnet, (progress) {
+    // wait until _subnet is initialized
+    while (_subnet == null) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+
+    final stream = findDevicesInNetwork(_subnet!, (progress) {
       if (!mounted) {
         // Exit the loop if the widget is no longer mounted.
         return;
@@ -105,6 +119,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
       onRefresh: () async {
         // on refresh should just be called when a scan of the network is done
         if (_subscription == null) {
+          initSubnet();
           _deviceDiscovery();
         }
       },
@@ -171,6 +186,8 @@ class _DiscoverPageState extends State<DiscoverPage> {
   }
 
   Widget getSubnetInfo() {
+    String subnet =
+        _subnet ?? AppLocalizations.of(context)!.discoverCardSubnetNoNetwork;
     return Card(
         elevation: 0,
         color:
@@ -179,17 +196,8 @@ class _DiscoverPageState extends State<DiscoverPage> {
             borderRadius: AppConstants.borderRadius,
             child: ListTile(
               title: Text(AppLocalizations.of(context)!.discoverCardTitle),
-              subtitle: FutureBuilder<String?>(
-                  future: subnet,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Text(
-                          "${AppLocalizations.of(context)!.discoverCardTextData} ${snapshot.data}");
-                    } else {
-                      return Text(
-                          AppLocalizations.of(context)!.discoverCardTextNoData);
-                    }
-                  }),
+              subtitle: Text(
+                  "${AppLocalizations.of(context)!.discoverCardSubnet} $subnet"),
               minLeadingWidth: 0,
               leading: const SizedBox(
                 height: double.infinity,
