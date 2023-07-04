@@ -45,14 +45,40 @@ class _AboutPageState extends State<AboutPage> {
     var deviceData = <String, dynamic>{};
 
     try {
-      switch (defaultTargetPlatform) {
-        case TargetPlatform.android:
-          deviceData =
-              _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
-          break;
-        case TargetPlatform.iOS:
-          deviceData = _readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
-          break;
+      if (kIsWeb) {
+        deviceData = <String, dynamic>{
+          'Error:': 'Web platform isn\'t supported'
+        };
+      } else {
+        switch (defaultTargetPlatform) {
+          case TargetPlatform.android:
+            deviceData =
+                _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
+            break;
+          case TargetPlatform.iOS:
+            deviceData = _readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
+            break;
+          case TargetPlatform.fuchsia:
+            deviceData = <String, dynamic>{
+              'Error:': 'Fuchsia platform isn\'t supported'
+            };
+            break;
+          case TargetPlatform.linux:
+            deviceData = <String, dynamic>{
+              'Error:': 'Linux platform isn\'t supported'
+            };
+            break;
+          case TargetPlatform.macOS:
+            deviceData = <String, dynamic>{
+              'Error:': 'MacOS platform isn\'t supported'
+            };
+            break;
+          case TargetPlatform.windows:
+            deviceData = <String, dynamic>{
+              'Error:': 'Windows platform isn\'t supported'
+            };
+            break;
+        }
       }
     } on PlatformException {
       deviceData = <String, dynamic>{
