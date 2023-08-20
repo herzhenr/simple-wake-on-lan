@@ -48,13 +48,42 @@ class _HomePageState extends State<HomePage> {
 
   late SortingOrder selectedMenu = widget.selectedMenu;
 
+  Timer? _pingDevicesTimer;
+
   @override
   void initState() {
     super.initState();
     _loadDevices().then((value) => {
           filterDevicesByType(),
           sortDevices(),
+          _pingDevices(),
         });
+  }
+
+  @override
+  void dispose() {
+    _pingDevicesTimer?.cancel();
+    super.dispose();
+  }
+
+  /// loads a list of devices from the device storage
+  Future<void> _loadDevices() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final devices = await _deviceStorage.loadDevices();
+      setState(() {
+        _devicesRaw = devices;
+      });
+    } on PlatformException catch (e) {
+      debugPrint('Failed to load devices: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   /// sort Devices by chipsDeviceTypes selection
@@ -102,22 +131,31 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  /// loads a list of devices from the device storage
-  Future<void> _loadDevices() async {
-    setState(() {
-      _isLoading = true;
+  /// ping devices periodically in the background to get the current status
+  /// of the devices and update the ui accordingly
+  void _pingDevices() {
+    checkAllDevicesStatus();
+    _pingDevicesTimer = Timer.periodic(
+        const Duration(seconds: AppConstants.homePingInterval), (timer) {
+      checkAllDevicesStatus();
     });
+  }
 
-    try {
-      final devices = await _deviceStorage.loadDevices();
+  /// updates the status of all devices in [_devices]
+  Future<void> checkAllDevicesStatus() async {
+    for (StorageDevice device in _devices) {
+      checkDeviceStatus(device);
+    }
+  }
+
+  /// ping a device and update the ui accordingly
+  /// [device] is the device to ping
+  /// if the widget is not mounted anymore, the function will stop
+  Future<void> checkDeviceStatus(StorageDevice device) async {
+    bool isOnline = await pingDevice(ipAddress: device.ipAddress);
+    if (mounted) {
       setState(() {
-        _devicesRaw = devices;
-      });
-    } on PlatformException catch (e) {
-      debugPrint('Failed to load devices: $e');
-    } finally {
-      setState(() {
-        _isLoading = false;
+        device.isOnline = isOnline;
       });
     }
   }
@@ -170,6 +208,7 @@ class _HomePageState extends State<HomePage> {
               MaterialPageRoute(
                   builder: (context) => DiscoverPage(
                         updateDevicesList: updateDevicesList,
+                        devices: _devices,
                       )),
             );
             if (newDevice != null) {
@@ -184,33 +223,53 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  updateDevicesList(devices) {
+  /// callback function for updating the list of devices
+  /// [devices] is the list of devices
+  /// [deviceId] is the changed device id. This devices gets pinged additionally to the background timer to get the current status.
+  /// If it is set to null, no device gets pinged (e.g. if device gets deleted, this devices doesn't need to get pinged)
+  updateDevicesList(List<StorageDevice> devices, String? deviceId) {
     setState(() {
-      //_devices.add(device);
       _devicesRaw = devices;
       filterDevicesByType();
       sortDevices();
+      if (deviceId != null) {
+        StorageDevice device =
+            devices.firstWhere((element) => element.id == deviceId);
+        // set online state to null because online state is not known yet
+        device.isOnline = null;
+        checkDeviceStatus(device);
+      }
     });
   }
 
   Widget buildListview() {
-    return ListView(
-      padding: AppConstants.screenPaddingScrollView,
-      children: [
-        TextTitle(
-          title: AppLocalizations.of(context)!.homeFilterDevicesTitle,
-          children: [
-            SizedBox(
-              height: 50,
-              child: filterDevicesChipsV2(),
-            ),
-          ],
-        ),
-        TextTitle(
-          title: AppLocalizations.of(context)!.homeDeviceListTitle,
-          children: [buildDeviceList()],
-        ),
-      ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        _pingDevicesTimer?.cancel();
+        // set online state for all devices to null because online state is not known yet
+        for (StorageDevice device in _devices) {
+          device.isOnline = null;
+        }
+        _pingDevices();
+      },
+      child: ListView(
+        padding: AppConstants.screenPaddingScrollView,
+        children: [
+          TextTitle(
+            title: AppLocalizations.of(context)!.homeFilterDevicesTitle,
+            children: [
+              SizedBox(
+                height: 50,
+                child: filterDevicesChipsV2(),
+              ),
+            ],
+          ),
+          TextTitle(
+            title: AppLocalizations.of(context)!.homeDeviceListTitle,
+            children: [buildDeviceList()],
+          ),
+        ],
+      ),
     );
   }
 
@@ -325,6 +384,7 @@ class _HomePageState extends State<HomePage> {
       title = device.ipAddress;
     }
     return DeviceCard(
+      isOnline: device.isOnline,
       title: title,
       subtitle: subtitle,
       deviceType: device.deviceType,
@@ -364,15 +424,30 @@ class _HomePageState extends State<HomePage> {
       required String subtitle2}) {
     return customDualChoiceAlertdialog(
         title: title != "" ? title : null,
-        child: (subtitle1 != "" || subtitle2 != "")
+        child: (subtitle1 != "" || subtitle2 != "" || device.isOnline != null)
             ? Column(
                 children: [
+                  if (device.isOnline != null)
+                    Text(
+                        device.isOnline!
+                            ? AppLocalizations.of(context)!.homeDeviceCardOnline
+                            : AppLocalizations.of(context)!
+                                .homeDeviceCardOffline,
+                        style: TextStyle(
+                            color: device.isOnline!
+                                ? AppConstants.successMessageColor
+                                : Theme.of(context).colorScheme.error)),
                   if (subtitle1 != "") Text(subtitle1),
                   if (subtitle2 != "") Text(subtitle2),
                 ],
               )
             : null,
         icon: getIcon(device.deviceType),
+        iconColor: device.isOnline != null
+            ? device.isOnline!
+                ? AppConstants.successMessageColor
+                : Theme.of(context).colorScheme.error
+            : null,
         leftText: AppLocalizations.of(context)!.homeDeviceCardWakeButton,
         rightText: AppLocalizations.of(context)!.homeDeviceCardEditButton,
         leftIcon: AppConstants.wakeUp,
@@ -385,6 +460,7 @@ class _HomePageState extends State<HomePage> {
                   formPage: EditDeviceFormPage(
                       title: "Edit Device",
                       device: device,
+                      devices: _devices,
                       onSubmitDeviceCallback: updateDevicesList))
             });
   }

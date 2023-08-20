@@ -15,12 +15,14 @@ import '../../widgets/universal_ui_components.dart';
 abstract class ModularBottomFormPage extends StatefulWidget {
   final String title;
   final Device device;
-  final Function(List<StorageDevice>) onSubmitDeviceCallback;
+  final List<StorageDevice> devices;
+  final Function(List<StorageDevice>, String?) onSubmitDeviceCallback;
   final bool deleteButton;
 
   ModularBottomFormPage(
       {Key? key,
       required this.device,
+      required this.devices,
       required this.title,
       required this.onSubmitDeviceCallback,
       this.deleteButton = false})
@@ -57,6 +59,7 @@ abstract class ModularBottomFormPage extends StatefulWidget {
           macAddress: controllerMac.text,
           modified: DateTime.now(),
           wolPort: wolPort,
+          isOnline: storageDevice.isOnline,
           deviceType: deviceType);
     } else {
       return NetworkDevice(
@@ -74,14 +77,13 @@ abstract class ModularBottomFormPage extends StatefulWidget {
 
   /// dataOperationOnSave() is an abstract method that is implemented in the child classes and is called when the submitButton is pressed
   /// it saves the device to the json file and returns the updated [StorageDevice] list
-  Future<List<StorageDevice>> dataOperationOnSave();
+  Future<(List<StorageDevice>, StorageDevice)> dataOperationOnSave();
 
   /// dataOperationOnDelete() is triggered when the delete button is pressed and delete a device from the json file and returns the updated [StorageDevice] list
   Future<List<StorageDevice>> dataOperationOnDelete() async {
     StorageDevice device = getDevice as StorageDevice;
-    List<StorageDevice> devices = await deviceStorage.deleteDevice(
-      device.id,
-    );
+    List<StorageDevice> devices =
+        await deviceStorage.deleteDevice(device.id, this.devices);
     return devices;
   }
 
@@ -213,10 +215,11 @@ class _ModularBottomFormPageState extends State<ModularBottomFormPage> {
             onPressed: () => {
                   validateFormFields(onSubmitDeviceCallback: () async {
                     Navigator.popUntil(context, (route) => route.isFirst);
-                    List<StorageDevice> device =
+                    (List<StorageDevice>, StorageDevice) updatedDevices =
                         await widget.dataOperationOnSave();
                     // sent device to callback function in order to update the UI
-                    widget.onSubmitDeviceCallback(device);
+                    widget.onSubmitDeviceCallback(
+                        updatedDevices.$1, updatedDevices.$2.id);
                   })
                 },
             text: AppLocalizations.of(context)!.formApplyButtonText,
@@ -529,9 +532,9 @@ class _ModularBottomFormPageState extends State<ModularBottomFormPage> {
           rightColor: Theme.of(context).colorScheme.error,
           rightOnPressed: () async {
             Navigator.popUntil(context, (route) => route.isFirst);
-            List<StorageDevice> device = await widget.dataOperationOnDelete();
+            List<StorageDevice> devices = await widget.dataOperationOnDelete();
             // sent device to callback function in order to update the UI
-            widget.onSubmitDeviceCallback(device);
+            widget.onSubmitDeviceCallback(devices, null);
           },
         );
       },
@@ -558,15 +561,15 @@ class NetworkDeviceFormPage extends ModularBottomFormPage {
   NetworkDeviceFormPage(
       {super.key,
       required super.device,
+      required super.devices,
       required super.title,
       required super.onSubmitDeviceCallback});
 
   @override
-  Future<List<StorageDevice>> dataOperationOnSave() async {
-    List<StorageDevice> devices = await deviceStorage.addDevice(
-      getDevice as NetworkDevice,
-    );
-    return devices;
+  Future<(List<StorageDevice>, StorageDevice)> dataOperationOnSave() async {
+    (List<StorageDevice>, StorageDevice) updatedDevices =
+        await deviceStorage.addDevice(getDevice as NetworkDevice, devices);
+    return updatedDevices;
   }
 }
 
@@ -576,15 +579,15 @@ class EditDeviceFormPage extends ModularBottomFormPage {
       {super.key,
       required super.device,
       required super.title,
+      required super.devices,
       required super.onSubmitDeviceCallback})
       : super(deleteButton: true);
 
   @override
-  Future<List<StorageDevice>> dataOperationOnSave() async {
-    List<StorageDevice> devices = await deviceStorage.updateDevice(
-      getDevice as StorageDevice,
-    );
-    return devices;
+  Future<(List<StorageDevice>, StorageDevice)> dataOperationOnSave() async {
+    (List<StorageDevice>, StorageDevice) updatedDevices =
+        await deviceStorage.updateDevice(getDevice as StorageDevice, devices);
+    return updatedDevices;
   }
 }
 

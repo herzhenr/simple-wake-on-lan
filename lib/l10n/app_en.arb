@@ -21,6 +21,8 @@
   "homeDeviceListTitle": "Devices",
   "homeDeviceCardWakeButton": "Wake Up",
   "homeDeviceCardEditButton": "Edit",
+  "homeDeviceCardOnline": "Device is online",
+  "homeDeviceCardOffline": "Device is offline",
   "homeWolCardTitle": "Waking up...",
   "@DISCOVER": {},
   "discoverTitle": "Discover Devices",
