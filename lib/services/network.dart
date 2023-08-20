@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dart_ping/dart_ping.dart';
+import 'package:simple_wake_on_lan/constants.dart';
 import 'dart:io';
 import 'package:wake_on_lan/wake_on_lan.dart';
 import 'data.dart';
@@ -17,7 +18,7 @@ Stream<NetworkDevice> findDevicesInNetwork(
     step ips away from the current as long as this ip is still within the subnet */
   void pingDevice(int index) async {
     final address = '$networkPrefix.$index';
-    final ping = Ping(address, count: 1, timeout: 1);
+    final ping = Ping(address, count: 1, timeout: AppConstants.homePingTimeout);
 
     // Wait for the current ping to complete
     await for (final response in ping.stream) {
@@ -155,6 +156,19 @@ Stream<List<Message>> sendWolAndGetMessages(
     messages.add(message);
     yield messages;
   }
+}
+
+/// ping a list of devices and return their status
+Future<bool> pingDevice({required String ipAddress}) async {
+  final ping = Ping(ipAddress, count: 1, timeout: 3);
+
+  // Wait for the current ping to complete
+  await for (final response in ping.stream) {
+    if (response.response != null && response.error == null) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /// Playground: Test different Discover methods

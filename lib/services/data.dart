@@ -30,6 +30,7 @@ abstract class Device implements Comparable<NetworkDevice> {
 class StorageDevice extends Device {
   final String id;
   final DateTime modified;
+  bool? isOnline;
 
   StorageDevice(
       {required this.id,
@@ -37,6 +38,7 @@ class StorageDevice extends Device {
       required ipAddress,
       required macAddress,
       wolPort,
+      this.isOnline,
       required this.modified,
       deviceType})
       : super(
@@ -60,6 +62,7 @@ class StorageDevice extends Device {
     int? wolPort,
     DateTime? modified,
     String? deviceType,
+    bool? isOnline,
   }) {
     return StorageDevice(
       id: id ?? this.id,
@@ -69,6 +72,7 @@ class StorageDevice extends Device {
       wolPort: wolPort ?? this.wolPort,
       modified: modified ?? this.modified,
       deviceType: deviceType ?? this.deviceType,
+      isOnline: isOnline ?? this.isOnline,
     );
   }
 

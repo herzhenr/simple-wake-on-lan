@@ -17,6 +17,10 @@ class AppConstants {
   static const add = Icon(Icons.add);
   static const sort = Icon(Icons.sort);
 
+  // Home Ping Timeouts and Intervals for scanning
+  static const homePingTimeout = 1;
+  static const homePingInterval = 12;
+
   // Wake Up Dialog Elements
   static const errorMessageColor = Colors.red;
   static const successMessageColor = Colors.green;

@@ -30,7 +30,7 @@ Widget customDualChoiceAlertdialog(
     IconData? rightIcon,
     Function()? leftOnPressed,
     Function()? rightOnPressed}) {
-  return customAlertdialog(
+  return customAlertDialog(
     title: title,
     child: child,
     icon: icon,
@@ -72,7 +72,7 @@ Widget customDualChoiceAlertdialog(
   );
 }
 
-Widget customAlertdialog(
+Widget customAlertDialog(
     {String? title,
     Widget? child,
     IconData? icon,

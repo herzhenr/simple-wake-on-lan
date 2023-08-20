@@ -144,6 +144,7 @@ class DeviceCard extends StatelessWidget {
   final VoidCallback? onTap;
   final String? title, subtitle, deviceType;
   final Widget? trailing;
+  final bool? isOnline;
 
   const DeviceCard(
       {super.key,
@@ -151,7 +152,8 @@ class DeviceCard extends StatelessWidget {
       this.title,
       this.subtitle,
       this.deviceType,
-      this.trailing});
+      this.trailing,
+      this.isOnline});
 
   @override
   Widget build(BuildContext context) {
@@ -170,8 +172,26 @@ class DeviceCard extends StatelessWidget {
             leading: deviceType != null && getIcon(deviceType!) != null
                 ? SizedBox(
                     height: double.infinity,
-                    child: Icon(
-                      getIcon(deviceType!),
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.center,
+                      children: [
+                        Icon(
+                          getIcon(deviceType!),
+                        ),
+                        Positioned(
+                          // draw a red marble
+                          top: 12.0,
+                          right: -4.0,
+                          child: Icon(Icons.brightness_1,
+                              size: 12.0,
+                              color: isOnline == null
+                                  ? Colors.grey
+                                  : isOnline!
+                                      ? AppConstants.successMessageColor
+                                      : AppConstants.errorMessageColor),
+                        )
+                      ],
                     ))
                 : null,
             trailing: trailing,

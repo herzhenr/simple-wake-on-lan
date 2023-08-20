@@ -10,9 +10,11 @@ import '../../widgets/layout_elements.dart';
 import '../../widgets/universal_ui_components.dart';
 
 class DiscoverPage extends StatefulWidget {
-  final Function(List<StorageDevice>) updateDevicesList;
+  final Function(List<StorageDevice>, String?) updateDevicesList;
+  final List<StorageDevice> devices;
 
-  const DiscoverPage({Key? key, required this.updateDevicesList})
+  const DiscoverPage(
+      {Key? key, required this.updateDevicesList, required this.devices})
       : super(key: key);
 
   @override
@@ -105,6 +107,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   title:
                       AppLocalizations.of(context)!.discoverAddDeviceAlertTitle,
                   device: NetworkDevice(),
+                  devices: widget.devices,
                   onSubmitDeviceCallback: widget.updateDevicesList)),
           text: AppLocalizations.of(context)!.discoverAddCustomDeviceButton,
           icon: const Icon(Icons.add)),
@@ -167,6 +170,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                                             .discoverAddDeviceAlertTitle,
                                         device: _devices[index]
                                             .copyWith(wolPort: 9),
+                                        devices: widget.devices,
                                         onSubmitDeviceCallback:
                                             widget.updateDevicesList)),
                               );
@@ -221,6 +225,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
       builder: (context) => NetworkDeviceFormPage(
           title: title,
           device: device.copyWith(wolPort: port),
+          devices: widget.devices,
           onSubmitDeviceCallback: widget.updateDevicesList),
     );
   }
