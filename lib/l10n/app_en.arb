@@ -24,6 +24,47 @@
   "homeDeviceCardOnline": "Device is online",
   "homeDeviceCardOffline": "Device is offline",
   "homeWolCardTitle": "Waking up...",
+  "homeWolCardIp": "'{ip}' is an invalid IPv4 address",
+  "@homeWolCardIp": {
+    "placeholders": {
+      "ip": {
+        "type": "String",
+        "example": "192.168.0.1"
+      }
+    }
+  },
+  "homeWolCardMac": "'{mac}' is an invalid MAC address",
+  "@homeWolCardMac": {
+    "placeholders": {
+      "mac": {
+        "type": "String",
+        "example": "12:AB:00:00:00:00"
+      }
+    }
+  },
+  "homeWolCardPort": "'{port}' is an invalid port",
+  "@homeWolCardPort": {
+    "placeholders": {
+      "port": {
+        "type": "String",
+        "example": "9"
+      }
+    }
+  },
+  "homeWolCardValid": "Provided device details are valid",
+  "homeWolCardInvalid": "There was an error trying to send a WOL Package",
+  "homeWolCardPingInfo": "Trying to ping device until it is online...",
+  "homeWolCardPing": "Sending ping #{count}",
+    "@homeWolCardPing": {
+        "placeholders": {
+        "count": {
+            "type": "String",
+            "example": "1"
+        }
+        }
+    },
+  "homeWolCardPingSuccess": "Device is online",
+  "homeWolCardPingFail": "Device is still offline",
   "@DISCOVER": {},
   "discoverTitle": "Discover Devices",
   "discoverCardTitle": "Network Scan",

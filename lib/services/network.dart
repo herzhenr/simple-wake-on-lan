@@ -69,12 +69,12 @@ Stream<Message> sendWolPackage({required NetworkDevice device}) async* {
   bool invalid = false;
 
   if (!IPv4Address.validate(ip)) {
-    yield Message(text: "'$ip' is a invalid IPv4 address", type: MsgType.error);
+    yield Message(text: "'$ip' is an invalid IPv4 address", type: MsgType.error);
     invalid = true;
   }
 
   if (!MACAddress.validate(mac)) {
-    yield Message(text: "'$mac' is a invalid MAC address", type: MsgType.error);
+    yield Message(text: "'$mac' is an invalid MAC address", type: MsgType.error);
     invalid = true;
   }
 
@@ -85,12 +85,12 @@ Stream<Message> sendWolPackage({required NetworkDevice device}) async* {
   }
 
   if (invalid) {
-    // yield Message(text: "There was a error when trying to send a WOL Package to this host", type: MsgType.error);
+    yield Message(text: "There was an error trying to send a WOL Package", type: MsgType.error);
     return;
   }
 
   // if no error occurred: try to send wol package
-  yield Message(text: "Provided ip and mac address are both valid");
+  yield Message(text: "Provided device details are valid");
   yield Message(text: "Trying to send WOL Packages");
 
   IPv4Address ipv4Address = IPv4Address(ip);
@@ -112,7 +112,7 @@ Stream<Message> sendWolPackage({required NetworkDevice device}) async* {
         text: "Successfully send WOL packages to $ip", type: MsgType.check);
   } catch (e) {
     yield Message(
-        text: "There was a error when trying to send WOL Packages to this host",
+        text: "There was an error when trying to send WOL Packages to this host",
         type: MsgType.error);
   }
 
