@@ -15,10 +15,14 @@
   "back": "Back",
   "genericWarning": "Warning",
   "@HOME": {},
+  "homeSortAlphabetical": "alphabetical",
+  "homeSortRecent": "recently",
+  "homeSortType": "type",
   "homeAddDeviceButton": "Add Devices",
   "homeNoDevices": "No devices yet. Add devices by clicking the + button below",
   "homeFilterDevicesTitle": "Filter Devices",
   "homeDeviceListTitle": "Devices",
+  "homeEditDeviceAlertTitle": "Edit Device",
   "homeDeviceCardWakeButton": "Wake Up",
   "homeDeviceCardEditButton": "Edit",
   "homeDeviceCardOnline": "Device is online",
@@ -114,7 +118,15 @@
   "formIconLabel": "Icon",
   "formIconError": "no device type selected",
   "formIconErrorTitle": "Wrong Format",
-  "formPort": "Port",
+  "formPort": "Port {port}",
+  "@formPort": {
+    "placeholders": {
+      "port": {
+        "type": "int",
+        "example": "9"
+      }
+    }
+  },
   "formErrorMessageName": "device has no name",
   "formErrorMessageIp": "invalid IP Address",
   "formErrorMessageMac": "invalid MAC Address",

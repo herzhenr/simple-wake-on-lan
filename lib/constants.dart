@@ -65,7 +65,7 @@ class AppConstants {
     if (context != null) {
       return chipsWolPorts
           .map((e) => CustomChoiceChip<int>(
-              label: "${AppLocalizations.of(context)!.formPort} ${e.value}",
+              label: AppLocalizations.of(context)!.formPort(e.value),
               value: e.value))
           .toList();
     } else {

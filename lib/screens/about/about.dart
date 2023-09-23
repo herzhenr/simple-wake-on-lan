@@ -193,11 +193,11 @@ class _AboutPageState extends State<AboutPage> {
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: _deviceData.keys.map((String property) {
-                  return Text('${_deviceData[property]}');
+                  return Text(_deviceData[property].toString());
                 }).toList(),
               ),
               subtitle: Text(
-                "IP: $_wifiAddress",
+                "${AppConstants.ipText}: $_wifiAddress",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               minLeadingWidth: 0,
