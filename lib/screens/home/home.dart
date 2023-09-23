@@ -472,7 +472,8 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (context) {
           return StreamBuilder<List<Message>>(
-              stream: sendWolAndGetMessages(device: device.toNetworkDevice()),
+              stream: sendWolAndGetMessages(
+                  context: context, device: device.toNetworkDevice()),
               builder: (BuildContext context,
                   AsyncSnapshot<List<Message>> snapshot) {
                 // set color, text and icon of dialog box according to the arrived messages
