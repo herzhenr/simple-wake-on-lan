@@ -15,15 +15,84 @@
   "back": "Back",
   "genericWarning": "Warning",
   "@HOME": {},
+  "homeSortAlphabetical": "alphabetical",
+  "homeSortRecent": "recently",
+  "homeSortType": "type",
   "homeAddDeviceButton": "Add Devices",
   "homeNoDevices": "No devices yet. Add devices by clicking the + button below",
   "homeFilterDevicesTitle": "Filter Devices",
   "homeDeviceListTitle": "Devices",
+  "homeEditDeviceAlertTitle": "Edit Device",
   "homeDeviceCardWakeButton": "Wake Up",
   "homeDeviceCardEditButton": "Edit",
   "homeDeviceCardOnline": "Device is online",
   "homeDeviceCardOffline": "Device is offline",
   "homeWolCardTitle": "Waking up...",
+  "homeWolCardIp": "'{ip}' is an invalid IPv4 address",
+  "@homeWolCardIp": {
+    "placeholders": {
+      "ip": {
+        "type": "String",
+        "example": "192.168.0.1",
+        "description": "The IP address which was provided by the user."
+      }
+    }
+  },
+  "homeWolCardMac": "'{mac}' is an invalid MAC address",
+  "@homeWolCardMac": {
+    "placeholders": {
+      "mac": {
+        "type": "String",
+        "example": "12:AB:00:00:00:00",
+        "description": "The MAC address which was provided by the user."
+      }
+    }
+  },
+  "homeWolCardPort": "'{port}' is an invalid port",
+  "@homeWolCardPort": {
+    "placeholders": {
+      "port": {
+        "type": "String",
+        "example": "9",
+        "description": "The port number which was provided by the user."
+      }
+    }
+  },
+  "homeWolCardInvalid": "There was an error trying to send a WOL Package",
+  "homeWolCardValid": "Provided device details are valid",
+  "homeWolCardSendWol": "Trying to send WOL Packages",
+  "homeWolCardSendWolSuccess": "Successfully send WOL packages to {ip}",
+  "@homeWolCardSendWolSuccess": {
+    "placeholders": {
+      "ip": {
+        "type": "String",
+        "example": "192.168.0.1",
+        "description": "The IP address of the device which was woken up."
+      }
+    }
+  },
+  "homeWolCardSendWolFail": "There was an error when trying to send WOL Packages to the host {ip}",
+  "@homeWolCardSendWolFail": {
+    "placeholders": {
+      "ip": {
+        "type": "String",
+        "example": "192.168.0.1",
+        "description": "The IP address of the device which could not be woken up."
+      }
+    }
+  },
+  "homeWolCardPingInfo": "Trying to ping device until it is online...",
+  "homeWolCardPing": "Sending ping #{count}",
+  "@homeWolCardPing": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "homeWolCardPingSuccess": "Device is online",
+  "homeWolCardPingFail": "Device is still offline",
   "@DISCOVER": {},
   "discoverTitle": "Discover Devices",
   "discoverCardTitle": "Network Scan",
@@ -49,7 +118,15 @@
   "formIconLabel": "Icon",
   "formIconError": "no device type selected",
   "formIconErrorTitle": "Wrong Format",
-  "formPort": "Port",
+  "formPort": "Port {port}",
+  "@formPort": {
+    "placeholders": {
+      "port": {
+        "type": "int",
+        "example": "9"
+      }
+    }
+  },
   "formErrorMessageName": "device has no name",
   "formErrorMessageIp": "invalid IP Address",
   "formErrorMessageMac": "invalid MAC Address",
@@ -104,5 +181,24 @@
   "aboutInfoText": "A simple tool to wake devices in the local network remotely if they are turned off. This app tries to make this process easy for the user.",
   "aboutOpenSourceTitle": "Open Source",
   "aboutOpenSourceCodeButton": "Source Code",
-  "aboutOpenSourceLicenseButton": "Licenses"
+  "aboutOpenSourceLicenseButton": "Licenses",
+  "aboutVersionText": "Version: {version} ({buildNumber})",
+  "@aboutVersionText": {
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "1.0.0"
+      },
+      "buildNumber": {
+        "type": "String",
+        "example": "1"
+      }
+    }
+  },
+  "aboutWebPlatformError": "Web platform isn't supported",
+  "aboutFuchsiaPlatformError": "Fuchsia platform isn't supported",
+  "aboutLinuxPlatformError": "Linux platform isn't supported",
+  "aboutMacOSPlatformError": "macOS platform isn't supported",
+  "aboutWindowsPlatformError": "Windows platform isn't supported",
+  "aboutNoPlatformDetected": "Failed to get platform version"
 }

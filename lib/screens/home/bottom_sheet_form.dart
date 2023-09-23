@@ -519,7 +519,7 @@ class _ModularBottomFormPageState extends State<ModularBottomFormPage> {
               TextSpan(text: AppLocalizations.of(context)!.formDeleteAlertText),
               if (widget.controllerName.text.isNotEmpty)
                 TextSpan(
-                    text: " ${widget.controllerName.text}",
+                    text: widget.controllerName.text,
                     style: const TextStyle(fontWeight: FontWeight.bold)),
               const TextSpan(text: '?'),
             ],

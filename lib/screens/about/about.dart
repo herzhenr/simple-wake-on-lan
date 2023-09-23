@@ -37,8 +37,14 @@ class _AboutPageState extends State<AboutPage> {
   @override
   void initState() {
     super.initState();
-    initPlatformState();
     initWifiAddress();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // not in initSate because buildContext is needed
+    initPlatformState();
   }
 
   Future<void> initPlatformState() async {
@@ -47,7 +53,7 @@ class _AboutPageState extends State<AboutPage> {
     try {
       if (kIsWeb) {
         deviceData = <String, dynamic>{
-          'Error:': 'Web platform isn\'t supported'
+          'Error:': AppLocalizations.of(context)!.aboutWebPlatformError
         };
       } else {
         switch (defaultTargetPlatform) {
@@ -60,29 +66,29 @@ class _AboutPageState extends State<AboutPage> {
             break;
           case TargetPlatform.fuchsia:
             deviceData = <String, dynamic>{
-              'Error:': 'Fuchsia platform isn\'t supported'
+              'Error:': AppLocalizations.of(context)!.aboutFuchsiaPlatformError
             };
             break;
           case TargetPlatform.linux:
             deviceData = <String, dynamic>{
-              'Error:': 'Linux platform isn\'t supported'
+              'Error:': AppLocalizations.of(context)!.aboutLinuxPlatformError
             };
             break;
           case TargetPlatform.macOS:
             deviceData = <String, dynamic>{
-              'Error:': 'MacOS platform isn\'t supported'
+              'Error:': AppLocalizations.of(context)!.aboutMacOSPlatformError
             };
             break;
           case TargetPlatform.windows:
             deviceData = <String, dynamic>{
-              'Error:': 'Windows platform isn\'t supported'
+              'Error:': AppLocalizations.of(context)!.aboutWindowsPlatformError
             };
             break;
         }
       }
     } on PlatformException {
       deviceData = <String, dynamic>{
-        'Error:': 'Failed to get platform version.'
+        'Error:': AppLocalizations.of(context)!.aboutNoPlatformDetected
       };
     }
 
@@ -163,14 +169,10 @@ class _AboutPageState extends State<AboutPage> {
             children: [
               VersionText(text: widget.packageInfo.appName),
               VersionText(text: widget.packageInfo.packageName),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const VersionText(text: "Version "),
-                  VersionText(text: widget.packageInfo.version),
-                  VersionText(text: " (${widget.packageInfo.buildNumber})"),
-                ],
-              ),
+              VersionText(
+                  text: AppLocalizations.of(context)!.aboutVersionText(
+                      widget.packageInfo.version,
+                      widget.packageInfo.buildNumber)),
             ],
           )
         ],
@@ -188,15 +190,14 @@ class _AboutPageState extends State<AboutPage> {
         child: InkWell(
             borderRadius: AppConstants.borderRadius,
             child: ListTile(
-              // title: const Text("iPhone XR"),
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: _deviceData.keys.map((String property) {
-                  return Text('${_deviceData[property]}');
-                }).toList(), // Text("IP: $_wifiAddress \nMAC: 12:12:12:12:12")
+                  return Text(_deviceData[property].toString());
+                }).toList(),
               ),
               subtitle: Text(
-                "IP: $_wifiAddress",
+                "${AppConstants.ipText}: $_wifiAddress",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               minLeadingWidth: 0,

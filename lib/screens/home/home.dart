@@ -186,17 +186,17 @@ class _HomePageState extends State<HomePage> {
             sortDevices();
           },
           itemBuilder: (BuildContext context) => <PopupMenuEntry<SortingOrder>>[
-            const PopupMenuItem<SortingOrder>(
+            PopupMenuItem<SortingOrder>(
               value: SortingOrder.alphabetical,
-              child: Text('alphabetical'),
+              child: Text(AppLocalizations.of(context)!.homeSortAlphabetical),
             ),
-            const PopupMenuItem<SortingOrder>(
+            PopupMenuItem<SortingOrder>(
               value: SortingOrder.recently,
-              child: Text('recently'),
+              child: Text(AppLocalizations.of(context)!.homeSortRecent),
             ),
-            const PopupMenuItem<SortingOrder>(
+            PopupMenuItem<SortingOrder>(
               value: SortingOrder.type,
-              child: Text('type'),
+              child: Text(AppLocalizations.of(context)!.homeSortType),
             ),
           ],
         ),
@@ -458,7 +458,8 @@ class _HomePageState extends State<HomePage> {
               showCustomBottomSheet(
                   context: context,
                   formPage: EditDeviceFormPage(
-                      title: "Edit Device",
+                      title: AppLocalizations.of(context)!
+                          .homeEditDeviceAlertTitle,
                       device: device,
                       devices: _devices,
                       onSubmitDeviceCallback: updateDevicesList))
@@ -472,7 +473,8 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (context) {
           return StreamBuilder<List<Message>>(
-              stream: sendWolAndGetMessages(device: device.toNetworkDevice()),
+              stream: sendWolAndGetMessages(
+                  context: context, device: device.toNetworkDevice()),
               builder: (BuildContext context,
                   AsyncSnapshot<List<Message>> snapshot) {
                 // set color, text and icon of dialog box according to the arrived messages

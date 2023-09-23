@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:dart_ping/dart_ping.dart';
+import 'package:flutter/material.dart';
 import 'package:simple_wake_on_lan/constants.dart';
 import 'dart:io';
 import 'package:wake_on_lan/wake_on_lan.dart';
 import 'data.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Stream<NetworkDevice> findDevicesInNetwork(
   String networkPrefix,
@@ -61,7 +63,8 @@ Stream<NetworkDevice> findDevicesInNetwork(
 }
 
 /// sends the magic packet to the [device] that should receive a magic wol package in order to get woken up
-Stream<Message> sendWolPackage({required NetworkDevice device}) async* {
+Stream<Message> sendWolPackage(
+    {required BuildContext context, required NetworkDevice device}) async* {
   // Validate correct formatting of ip and mac addresses
   final ip = device.ipAddress;
   final mac = device.macAddress;
@@ -69,29 +72,38 @@ Stream<Message> sendWolPackage({required NetworkDevice device}) async* {
   bool invalid = false;
 
   if (!IPv4Address.validate(ip)) {
-    yield Message(text: "'$ip' is a invalid IPv4 address", type: MsgType.error);
+    yield Message(
+        text: AppLocalizations.of(context)!.homeWolCardIp(ip),
+        type: MsgType.error);
     invalid = true;
   }
 
   if (!MACAddress.validate(mac)) {
-    yield Message(text: "'$mac' is a invalid MAC address", type: MsgType.error);
+    yield Message(
+        text: AppLocalizations.of(context)!.homeWolCardMac(mac),
+        type: MsgType.error);
     invalid = true;
   }
 
   //validate port
   if (port == null || port < 0 || port > 65535) {
-    yield Message(text: "'$port' is an invalid port", type: MsgType.error);
+    String portString = port == null ? "" : port.toString();
+    yield Message(
+        text: AppLocalizations.of(context)!.homeWolCardPort(portString),
+        type: MsgType.error);
     invalid = true;
   }
 
   if (invalid) {
-    // yield Message(text: "There was a error when trying to send a WOL Package to this host", type: MsgType.error);
+    yield Message(
+        text: AppLocalizations.of(context)!.homeWolCardInvalid,
+        type: MsgType.error);
     return;
   }
 
   // if no error occurred: try to send wol package
-  yield Message(text: "Provided ip and mac address are both valid");
-  yield Message(text: "Trying to send WOL Packages");
+  yield Message(text: AppLocalizations.of(context)!.homeWolCardValid);
+  yield Message(text: AppLocalizations.of(context)!.homeWolCardSendWol);
 
   IPv4Address ipv4Address = IPv4Address(ip);
   MACAddress macAddress = MACAddress(mac);
@@ -102,28 +114,43 @@ Stream<Message> sendWolPackage({required NetworkDevice device}) async* {
   final broadcast = "$subnet.255";
   IPv4Address ipv4Broadcast = IPv4Address(broadcast);
 
+  // get localisation string beforehand to avoid using BuildContexts across async gaps
+  String homeWolCardSendWolSuccess =
+      AppLocalizations.of(context)!.homeWolCardSendWolSuccess(ip);
+  String homeWolCardPingInfo =
+      AppLocalizations.of(context)!.homeWolCardPingInfo;
+  String homeWolCardPingSuccess =
+      AppLocalizations.of(context)!.homeWolCardPingSuccess;
+  String homeWolCardPingFail =
+      AppLocalizations.of(context)!.homeWolCardPingFail;
+
   try {
     WakeOnLAN wol = WakeOnLAN(ipv4Address, macAddress, port: port!);
-    await wol.wake(repeat: 5);
+    await wol.wake(repeat: 3);
     await Future.delayed(const Duration(seconds: 1));
     WakeOnLAN wolBroadcast = WakeOnLAN(ipv4Broadcast, macAddress, port: port);
-    await wolBroadcast.wake(repeat: 5);
-    yield Message(
-        text: "Successfully send WOL packages to $ip", type: MsgType.check);
+    await wolBroadcast.wake(repeat: 3);
+    yield Message(text: homeWolCardSendWolSuccess, type: MsgType.check);
   } catch (e) {
     yield Message(
-        text: "There was a error when trying to send WOL Packages to this host",
+        text: AppLocalizations.of(context)!.homeWolCardSendWolFail(ip),
         type: MsgType.error);
   }
 
   // ping device until it is online
-  yield Message(text: "Trying to ping device until it is online...");
+  yield Message(text: homeWolCardPingInfo);
   bool online = false;
   int tries = 0;
   const maxPings = 25;
   while (!online && tries < maxPings) {
     tries++;
-    yield Message(text: "Sending ping #$tries", type: MsgType.ping);
+
+    // BuildContext has to be used async here to get the current tries in the message
+    // ignore: use_build_context_synchronously
+    if (!context.mounted) return;
+    yield Message(
+        text: AppLocalizations.of(context)!.homeWolCardPing(tries),
+        type: MsgType.ping);
 
     final ping = Ping(ip, count: 1, timeout: 5);
 
@@ -135,18 +162,19 @@ Stream<Message> sendWolPackage({required NetworkDevice device}) async* {
     }
   }
   if (online) {
-    yield Message(text: "Device is online", type: MsgType.online);
+    yield Message(text: homeWolCardPingSuccess, type: MsgType.online);
   } else {
-    yield Message(text: "Device is not online", type: MsgType.error);
+    yield Message(text: homeWolCardPingFail, type: MsgType.error);
   }
 }
 
 /// returns a list of Messages by using the sendWolPackage function
 /// accumulates the messages in a list and yields the list after each message
 Stream<List<Message>> sendWolAndGetMessages(
-    {required NetworkDevice device}) async* {
+    {required BuildContext context, required NetworkDevice device}) async* {
   List<Message> messages = [];
-  await for (Message message in sendWolPackage(device: device)) {
+  await for (Message message
+      in sendWolPackage(context: context, device: device)) {
     // if last message is ping, replace it with the new one
     if (messages.isNotEmpty &&
         messages.last.type == MsgType.ping &&
