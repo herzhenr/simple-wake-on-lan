@@ -58,10 +58,10 @@
       }
     }
   },
-  "homeWolCardInvalid": "There was an error trying to send a WOL Package",
+  "homeWolCardInvalid": "There was an error trying to send a WOL packet",
   "homeWolCardValid": "Provided device details are valid",
-  "homeWolCardSendWol": "Trying to send WOL Packages",
-  "homeWolCardSendWolSuccess": "Successfully send WOL packages to {ip}",
+  "homeWolCardSendWol": "Trying to send WOL packets",
+  "homeWolCardSendWolSuccess": "Successfully sent WOL packets to {ip}",
   "@homeWolCardSendWolSuccess": {
     "placeholders": {
       "ip": {
@@ -71,7 +71,7 @@
       }
     }
   },
-  "homeWolCardSendWolFail": "There was an error when trying to send WOL Packages to the host {ip}",
+  "homeWolCardSendWolFail": "There was an error when trying to send WOL packets to the host {ip}",
   "@homeWolCardSendWolFail": {
     "placeholders": {
       "ip": {
