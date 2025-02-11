@@ -61,7 +61,7 @@
   "homeWolCardInvalid": "There was an error trying to send a WOL Package",
   "homeWolCardValid": "Provided device details are valid",
   "homeWolCardSendWol": "Trying to send WOL Packages",
-  "homeWolCardSendWolSuccess": "Successfully send WOL packages to {ip}",
+  "homeWolCardSendWolSuccess": "Successfully sent WOL packages to {ip}",
   "@homeWolCardSendWolSuccess": {
     "placeholders": {
       "ip": {
